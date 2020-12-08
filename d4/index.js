@@ -16,7 +16,7 @@ data.forEach(item => {
     var normilize = item
         .replace(/[\r\n\s]/gim, "~")
         .split("~")
-
+    normilize.sort((a, b) => a < b ? -1 : 1)
     var o = {}
     normilize.forEach(n => {
         if (n) {
@@ -45,7 +45,7 @@ var validators = {
     pid: (i) => { return /^[0-9]{9}$/i.test(i) },
     eyr: (i) => { return i <= "2030" && i >= "2020" },
     hcl: (i) => { return /^#[0-9a-f]{6}$/i.test(i) },
-    byr: (i) => { return i <= "2020" && i >= "1920" },
+    byr: (i) => { return i <= "2002" && i >= "1920" },
     iyr: (i) => { return i <= "2020" && i >= "2010" },
     hgt: (i) => {
         if (i.indexOf("cm") >= 0) {
@@ -83,15 +83,6 @@ console.log("valid", objects.filter(x => x.errors.length === 0).length)
 
 var log = objects
     .filter(x => x.errors.length === 0)
-// .map(o => {
-//     return {
-//         key: o.ke,
-//         value: o[o.invalid],
-//         reason: o.reason
-//     }
-// })
-// log.sort((a, b) => a.key < b.key ? -1 : 1)
-// console.log("objects", log)
 
 fs.writeFileSync(path.join(__dirname, "out.txt"),
     JSON.stringify(log, null, "  "), "utf-8")
